@@ -1,0 +1,33 @@
+
+#compiled files
+*.class
+.DS_Store
+# Package Files #
+*.war
+*.ear
+*.pyc
+bin/
+*.pyc
+
+#ide files
+target/
+.project
+.settings
+.settings/
+*.project
+.checkstyle
+.pydevproject
+*.pydevproject
+.idea/*
+*/.idea/*
+*.idea/*
+.idea
+*.iml
+#end ide files
+
+#logs
+*Log.out*
+*.log
+#end logs
+
+*.ini
