@@ -2,7 +2,6 @@ package plugin;
 
 import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
@@ -29,6 +28,7 @@ public class ExternalPropertyReader
         Properties projProps = session.getCurrentProject().getProperties();
         List<File> files = getFiles(projProps);
         for (File file : files) {
+            logger.info("File path being loaded" + file.getAbsolutePath());
             Scanner scanner = null;
             try {
                 scanner = new Scanner(file);
@@ -47,10 +47,23 @@ public class ExternalPropertyReader
 
     private List<File> getFiles(Properties projProps) {
         Enumeration enumeration = projProps.propertyNames();
+        List<String> propertyNames = new ArrayList<String>();
         while(enumeration.hasMoreElements()) {
             String name = enumeration.nextElement().toString();
-            logger.info("Property name " + name);
+            if (name.startsWith("externalPropertyFile_")) {
+                propertyNames.add(name);
+                logger.info("Property name " + name);
+            }
+            if (name.endsWith("PropFile")) {
+                propertyNames.add(name);
+                logger.info("Property name " + name);
+            }
         }
-        return new ArrayList<File>();
+        List<File> files = new ArrayList<File>();
+        for (String propertyName: propertyNames) {
+            String property = projProps.getProperty(propertyName);
+            files.add(new File(property));
+        }
+        return files;
     }
 }
