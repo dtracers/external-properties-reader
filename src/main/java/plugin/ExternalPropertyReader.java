@@ -26,9 +26,10 @@ public class ExternalPropertyReader
         // for example, to set some POM properties
         Properties sysProps = session.getSystemProperties();
         Properties projProps = session.getCurrentProject().getProperties();
+        logger.info("Grabbing files from properties");
         List<File> files = getFiles(projProps);
         for (File file : files) {
-            logger.info("File path being loaded" + file.getAbsolutePath());
+            logger.info("Properties that were loaded from file " + file.getName());
             Scanner scanner = null;
             try {
                 scanner = new Scanner(file);
@@ -37,7 +38,7 @@ public class ExternalPropertyReader
             }
             while (scanner.hasNext()) {
                 String line = scanner.nextLine();
-                logger.info("value " + line);
+                logger.info(line);
                 String[] property = line.split("=");
                 projProps.setProperty(property[0].trim(), property[1].trim());
             }
@@ -51,11 +52,9 @@ public class ExternalPropertyReader
             String name = enumeration.nextElement().toString();
             if (name.startsWith("externalPropertyFile_")) {
                 propertyNames.add(name);
-                logger.info("Property name " + name);
             }
             if (name.endsWith("PropFile")) {
                 propertyNames.add(name);
-                logger.info("Property name " + name);
             }
         }
         List<File> files = new ArrayList<File>();
