@@ -39,8 +39,7 @@ public class ExternalPropertyReader
                 String line = scanner.nextLine();
                 logger.info("value " + line);
                 String[] property = line.split("=");
-                logger.info("Property " + property.length);
-                projProps.setProperty(property[0],property[1]);
+                projProps.setProperty(property[0].trim(), property[1].trim());
             }
         }
     }
