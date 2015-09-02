@@ -9,18 +9,30 @@ public class propertyReader
     extends AbstractMavenLifecycleParticipant
 {
 
+    /**
+     * My File.
+     */
+    @Parameter
+    private File[] files;
+
     @Requirement
     private Logger logger;
 
     @Override
-    public void afterProjectsRead( MavenSession session ) {
-        // ...do you magic here
-
+    public void afterProjectsRead(MavenSession session) {
         // for example, to set some POM properties
         Properties sysProps = session.getSystemProperties();
-        ....
         Properties projProps = session.getCurrentProject().getProperties();
-        projProps.setProperty("..",val);
+        for (File file : files) {
+          Scanner scanner = new Scanner(file);
+          while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            logger.log("value " + line);
+            String property = line.split("=");
+            logger.log("Property " + property.length);
+            projProps.setProperty(property[0],property[1]);
+          }
 
+        }
     }
 }

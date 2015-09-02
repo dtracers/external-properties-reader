@@ -10,10 +10,8 @@
     <name>external-properties-reader</name>
     <groupId>course.sketch</groupId>
     <artifactId>external-properties-reader</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <parent>
-    </parent>
 
     <properties>
         <mavenApiVer>3.0.5</mavenApiVer>
@@ -60,6 +58,14 @@
             <version>${mavenApiVer}</version>
         </dependency>
         <!-- Maven Build Extension -->
+
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.4</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 </project>
