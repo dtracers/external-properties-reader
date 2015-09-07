@@ -2,6 +2,11 @@ package plugin;
 
 import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.plugin.Mojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
@@ -16,13 +21,20 @@ import java.util.Scanner;
 
 @Component(role = AbstractMavenLifecycleParticipant.class, hint = "external-properties-reader")
 public class ExternalPropertyReader
-        extends AbstractMavenLifecycleParticipant
+        extends AbstractMavenLifecycleParticipant implements Mojo
 {
     @Requirement
     private Logger logger;
 
+    @Parameter(defaultValue = "${session}")
+    private MavenSession session;
+
     @Override
     public void afterProjectsRead(MavenSession session) {
+        execute(session);
+    }
+
+    public void execute(MavenSession session) {
         // for example, to set some POM properties
         Properties sysProps = session.getSystemProperties();
         Properties projProps = session.getCurrentProject().getProperties();
@@ -63,5 +75,17 @@ public class ExternalPropertyReader
             files.add(new File(property));
         }
         return files;
+    }
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        execute(session);
+    }
+
+    public void setLog(final Log log) {
+
+    }
+
+    public Log getLog() {
+        return null;
     }
 }
